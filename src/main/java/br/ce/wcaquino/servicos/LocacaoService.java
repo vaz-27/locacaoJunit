@@ -2,8 +2,9 @@ package br.ce.wcaquino.servicos;
 
 import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 
-import java.text.ParseException;
 import java.util.Date;
+
+import org.junit.Test;
 
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
@@ -31,8 +32,9 @@ public class LocacaoService {
 		
 		return locacao;
 	}
-
-	public static void main(String[] args) throws ParseException {
+	
+	@Test
+	public void teste() {
 		
 		//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
