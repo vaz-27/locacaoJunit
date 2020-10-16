@@ -14,7 +14,10 @@ import org.junit.rules.ErrorCollector;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
+import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
+import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
+import org.junit.Assert;
 
 public class LocacaoServiceTest {
 	
@@ -22,7 +25,7 @@ public class LocacaoServiceTest {
 	public ErrorCollector error = new ErrorCollector();
 	
 	@Test
-	public void teste() {
+	public void teste() throws Exception {
 		
 		//cenario
 		LocacaoService LS = new LocacaoService();
@@ -38,6 +41,33 @@ public class LocacaoServiceTest {
 		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
 		error.checkThat(isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true));
 	
+	}
+	
+	@Test (expected = FilmeSemEstoqueException.class)
+	public void teste_filmeSemEstoque() throws Exception {
+		 //cenario
+		LocacaoService LS = new LocacaoService();
+		Usuario usuario = new Usuario("Ronaldo");
+		Filme filme = new Filme("A espera de um milagre",0,55.00);
+
+		//acao
+		LS.alugarFilme(usuario, filme);
+	}
+	
+	@Test
+	public void teste_usuarioVazio() throws FilmeSemEstoqueException {
+		 //cenario
+		LocacaoService LS = new LocacaoService();
+		Filme filme = new Filme("A espera de um milagre",1,55.00);
+
+		//acao
+		try {
+			LS.alugarFilme(null, filme);
+			Assert.fail();
+		} catch (LocadoraException e) {
+			Assert.assertThat(e.getMessage(), is("Usuario vazio"));
+		}
+		
 	}
 }
 
