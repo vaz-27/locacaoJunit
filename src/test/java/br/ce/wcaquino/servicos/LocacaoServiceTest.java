@@ -17,8 +17,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void teste() {
 		
-		//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		
 		//cenario
 		LocacaoService LS = new LocacaoService();
 		Usuario usuario = new Usuario("Ronaldo");
