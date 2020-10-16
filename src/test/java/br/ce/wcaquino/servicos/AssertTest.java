@@ -25,9 +25,17 @@ public class AssertTest {
 		Assert.assertTrue("amora".startsWith("am"));
 		
 		Usuario u1 = new Usuario("Fernanda");
-		Usuario u2 = u1;
+		Usuario u2 = new Usuario("Fernanda");
+		Usuario u3 = u2;
+		Usuario u4 = null;
 		
 		Assert.assertEquals(u2, u1);
+		Assert.assertSame(u3, u2); //verifica a nivel de instancia
+		Assert.assertNull(u4);
+		
+		Assert.assertNotEquals("bola", "amora");
+		Assert.assertNotSame(u1, u2);
+		Assert.assertNotNull(u3);
 	
 	}
 
