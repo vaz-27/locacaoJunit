@@ -39,7 +39,7 @@ public class LocacaoServiceTest {
 	}
 	
 	@Test
-	public void teste() throws Exception {	
+	public void teste() throws LocadoraException, FilmeSemEstoqueException {	
 		Usuario usuario = new Usuario("Ronaldo");
 		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00));
 
@@ -89,5 +89,76 @@ public class LocacaoServiceTest {
 		LS.alugarFilme(usuario, null);		
 	}
 	
+	@Test
+	public void teste_terceiroFilmePaga75() throws LocadoraException, FilmeSemEstoqueException {
+		//cenario
+		Usuario usuario = new Usuario("Wanda");
+		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00), 
+				new Filme("Orgulho e Preconceito", 1, 40.00),
+				new Filme("Diario de uma paixão", 2, 54.00)
+				);
+		
+		//acao
+		Locacao result = LS.alugarFilme(usuario, filmes);
+
+		//verificacao
+		Assert.assertThat(result.getValor(), is(135.50));
+				
+	}
+	
+	@Test
+	public void teste_quartoFilmePaga50() throws LocadoraException, FilmeSemEstoqueException {
+		//cenario
+		Usuario usuario = new Usuario("Wanda");
+		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00), 
+				new Filme("Orgulho e Preconceito", 1, 40.00),
+				new Filme("Diario de uma paixão", 2, 54.00),
+				new Filme("Matrix", 2, 50.00)
+				);
+		
+		//acao
+		Locacao result = LS.alugarFilme(usuario, filmes);
+
+		//verificacao
+		Assert.assertThat(result.getValor(), is(160.50));
+				
+	}
+	
+	@Test
+	public void teste_quintoFilmePaga25() throws LocadoraException, FilmeSemEstoqueException {
+		//cenario
+		Usuario usuario = new Usuario("Wanda");
+		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00), 
+				new Filme("Orgulho e Preconceito", 1, 40.00),
+				new Filme("Diario de uma paixão", 2, 54.00),
+				new Filme("Matrix", 2, 50.00),
+				new Filme("Sherk",2,100.00)
+				);
+		
+		//acao
+		Locacao result = LS.alugarFilme(usuario, filmes);
+
+		//verificacao
+		Assert.assertThat(result.getValor(), is(185.50));			
+	}
+	
+	@Test
+	public void teste_sextoFilmeFree() throws LocadoraException, FilmeSemEstoqueException {
+		//cenario
+		Usuario usuario = new Usuario("Wanda");
+		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00), 
+				new Filme("Orgulho e Preconceito", 1, 40.00),
+				new Filme("Diario de uma paixão", 2, 54.00),
+				new Filme("Matrix", 2, 50.00),
+				new Filme("Sherk",2,100.00),
+				new Filme("Scoby Doo",3,50.00)
+				);
+		
+		//acao
+		Locacao result = LS.alugarFilme(usuario, filmes);
+
+		//verificacao
+		Assert.assertThat(result.getValor(), is(185.50));			
+	}
 }
 
