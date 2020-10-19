@@ -5,7 +5,9 @@ import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,10 +41,10 @@ public class LocacaoServiceTest {
 	@Test
 	public void teste() throws Exception {	
 		Usuario usuario = new Usuario("Ronaldo");
-		Filme filme = new Filme("A espera de um milagre",2,55.00);
+		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00));
 
 		//acao
-		Locacao locacao = LS.alugarFilme(usuario, filme);
+		Locacao locacao = LS.alugarFilme(usuario, filmes);
 				
 		//validacao
 		error.checkThat(locacao.getValor(),is(equalTo(55.0)));
@@ -55,20 +57,20 @@ public class LocacaoServiceTest {
 	public void teste_filmeSemEstoque() throws Exception {
 		//cenario
 		Usuario usuario = new Usuario("Ronaldo");
-		Filme filme = new Filme("A espera de um milagre",0,55.00);
+		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",0,55.00));
 
 		//acao
-		LS.alugarFilme(usuario, filme);
+		LS.alugarFilme(usuario, filmes);
 	}
 	
 	@Test
 	public void teste_usuarioVazio() throws FilmeSemEstoqueException {
 		//cenario
-		Filme filme = new Filme("A espera de um milagre",1,55.00);
+		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00));
 
 		//acao
 		try {
-			LS.alugarFilme(null, filme);
+			LS.alugarFilme(null, filmes);
 			Assert.fail();
 		} catch (LocadoraException e) {
 			Assert.assertThat(e.getMessage(), is("Usuario vazio"));
@@ -81,7 +83,7 @@ public class LocacaoServiceTest {
 		Usuario usuario = new Usuario("Ronaldo");
 		
 		exception.expect(LocadoraException.class);
-		exception.expectMessage("Filme vazio");
+		exception.expectMessage("Filmes vazio");
 
 		//acao
 		LS.alugarFilme(usuario, null);		
