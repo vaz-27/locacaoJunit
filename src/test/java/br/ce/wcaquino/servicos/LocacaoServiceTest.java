@@ -17,6 +17,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
@@ -25,6 +27,7 @@ import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
 
+@RunWith(Parameterized.class)
 public class LocacaoServiceTest {
 	
 	private LocacaoService LS;
@@ -40,6 +43,9 @@ public class LocacaoServiceTest {
 		LS = new LocacaoService();
 	}
 	
+	/*public Collection<Object[]> getParametros(){
+	}
+	*/
 	@Test
 	public void teste_alugaFilme() throws LocadoraException, FilmeSemEstoqueException {
 		Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
