@@ -2,11 +2,16 @@ package br.ce.wcaquino.servicos;
 
 import static org.hamcrest.CoreMatchers.is;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
@@ -14,6 +19,7 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 
+@RunWith(Parameterized.class)
 public class CalculoValorLocacaoTest {
 	
 	private List<Filme> filmes;
@@ -23,6 +29,23 @@ public class CalculoValorLocacaoTest {
 	@Before
 	public void cenario() {
 		LS = new LocacaoService();
+	}
+	
+	private static Filme filme1 = new Filme("A espera de um milagre",2,55.00);
+	private static Filme filme2 = new Filme("Orgulho e Preconceito", 1, 40.00);
+	private static Filme filme3 = new Filme("Diario de uma paixão", 2, 54.00);
+	private static Filme filme4 = new Filme("Matrix", 2, 50.00);
+	private static Filme filme5 = new Filme("Sherk",2,100.00);
+	private static Filme filme6 = new Filme("Scoby Doo",3,50.00);
+	
+	@Parameters
+	public static Collection<Object[]> getParametros(){
+		return Arrays.asList(new Object[][] {
+			{Arrays.asList(filme1, filme2,filme3), 135.5},
+			{Arrays.asList(filme1, filme2,filme3, filme4), 160.5},
+			{Arrays.asList(filme1, filme2,filme3, filme4, filme5), 185.5},
+			{Arrays.asList(filme1, filme2,filme3, filme4, filme5, filme6), 185.5}
+		});
 	}
 	
 	@Test
