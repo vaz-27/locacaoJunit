@@ -69,13 +69,6 @@ public class CalculoValorLocacaoTest {
 		Locacao result = LS.alugarFilme(usuario, filmes);
 
 		//verificacao
-		Assert.assertThat(result.getValor(), is(valorLocacao));
-				
+		Assert.assertThat(result.getValor(), is(valorLocacao));				
 	}
-	
-	@Test
-	public void print() {
-		System.out.println(valorLocacao);
-	}
-
 }
