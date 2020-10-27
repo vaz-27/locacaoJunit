@@ -2,7 +2,6 @@ package br.ce.wcaquino.servicos;
 
 
 import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
-import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -25,6 +24,7 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
+import br.ce.wcaquino.matcher.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
 
 
@@ -55,8 +55,8 @@ public class LocacaoServiceTest {
 				
 		//validacao
 		error.checkThat(locacao.getValor(),is(equalTo(55.0)));
-		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		error.checkThat(isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true));
+		error.checkThat(locacao.getDataLocacao(), MatchersProprios.ehHoje());
+		error.checkThat(locacao.getDataRetorno(), MatchersProprios.ehHojeComDiferencadeDias(1));
 	
 	}
 	
