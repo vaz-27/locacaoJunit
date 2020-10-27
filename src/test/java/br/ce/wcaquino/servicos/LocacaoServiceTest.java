@@ -1,7 +1,6 @@
 package br.ce.wcaquino.servicos;
 
 
-import static br.ce.wcaquino.buiders.FilmeBuilder.umFilme;
 import static br.ce.wcaquino.buiders.UsuarioBuilder.umUsuario;
 import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,6 +20,7 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import br.ce.wcaquino.buiders.FilmeBuilder;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -50,7 +50,7 @@ public class LocacaoServiceTest {
 		Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilme().comValor(10.0).agora());
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeComValor().agora());
 
 		//acao
 		Locacao locacao = LS.alugarFilme(usuario, filmes);
@@ -66,7 +66,7 @@ public class LocacaoServiceTest {
 	public void teste_filmeSemEstoque() throws Exception {
 		//cenario
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilme().semEstoque().agora());
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeSemEstoque().agora());
 
 		//acao
 		LS.alugarFilme(usuario, filmes);
@@ -75,7 +75,7 @@ public class LocacaoServiceTest {
 	@Test
 	public void teste_usuarioVazio() throws FilmeSemEstoqueException {
 		//cenario
-		List<Filme> filmes = Arrays.asList(umFilme().comValor(10.0).agora());
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeComValor().agora());
 
 		//acao
 		try {
@@ -105,7 +105,7 @@ public class LocacaoServiceTest {
 		
 		//cenario
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilme().comValor(10.0).agora());
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeComValor().agora());
 		
 		//acao
 		Locacao retorno = LS.alugarFilme(usuario, filmes);

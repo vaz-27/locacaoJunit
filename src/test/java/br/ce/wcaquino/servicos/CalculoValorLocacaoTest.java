@@ -1,6 +1,5 @@
 package br.ce.wcaquino.servicos;
 
-import static br.ce.wcaquino.buiders.FilmeBuilder.umFilme;
 import static org.hamcrest.CoreMatchers.is;
 
 import java.util.Arrays;
@@ -15,6 +14,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+import br.ce.wcaquino.buiders.FilmeBuilder;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -40,13 +40,13 @@ public class CalculoValorLocacaoTest {
 		LS = new LocacaoService();
 	}
 	
-	private static Filme filme1 = umFilme().agora();
-	private static Filme filme2 = umFilme().agora();
-	private static Filme filme3 = umFilme().agora();
-	private static Filme filme4 = umFilme().agora();
-	private static Filme filme5 = umFilme().agora();
-	private static Filme filme6 = umFilme().agora();
-	private static Filme filme7 = umFilme().agora();
+	private static Filme filme1 = FilmeBuilder.umFilmeComValor().agora();
+	private static Filme filme2 = FilmeBuilder.umFilmeComValor().agora();
+	private static Filme filme3 = FilmeBuilder.umFilmeComValor().agora();
+	private static Filme filme4 = FilmeBuilder.umFilmeComValor().agora();
+	private static Filme filme5 = FilmeBuilder.umFilmeComValor().agora();
+	private static Filme filme6 = FilmeBuilder.umFilmeComValor().agora();
+	private static Filme filme7 = FilmeBuilder.umFilmeComValor().agora();
 	
 	
 	@Parameters(name ="{2}")
