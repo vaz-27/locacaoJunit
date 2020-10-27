@@ -1,5 +1,6 @@
 package br.ce.wcaquino.servicos;
 
+import static br.ce.wcaquino.buiders.FilmeBuilder.umFilme;
 import static org.hamcrest.CoreMatchers.is;
 
 import java.util.Arrays;
@@ -39,13 +40,13 @@ public class CalculoValorLocacaoTest {
 		LS = new LocacaoService();
 	}
 	
-	private static Filme filme1 = new Filme("A espera de um milagre",2,55.00);
-	private static Filme filme2 = new Filme("Orgulho e Preconceito", 1, 40.00);
-	private static Filme filme3 = new Filme("Diario de uma paixão", 2, 54.00);
-	private static Filme filme4 = new Filme("Matrix", 2, 50.00);
-	private static Filme filme5 = new Filme("Sherk",2,100.00);
-	private static Filme filme6 = new Filme("Scoby Doo",3,50.00);
-	private static Filme filme7 = new Filme("Um amor para recordar",4,100.00);
+	private static Filme filme1 = umFilme().agora();
+	private static Filme filme2 = umFilme().agora();
+	private static Filme filme3 = umFilme().agora();
+	private static Filme filme4 = umFilme().agora();
+	private static Filme filme5 = umFilme().agora();
+	private static Filme filme6 = umFilme().agora();
+	private static Filme filme7 = umFilme().agora();
 	
 	
 	@Parameters(name ="{2}")
