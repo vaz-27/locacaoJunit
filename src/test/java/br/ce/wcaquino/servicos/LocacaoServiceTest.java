@@ -1,6 +1,7 @@
 package br.ce.wcaquino.servicos;
 
 
+import static br.ce.wcaquino.buiders.UsuarioBuilder.umUsuario;
 import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -47,7 +48,7 @@ public class LocacaoServiceTest {
 	public void teste_alugaFilme() throws LocadoraException, FilmeSemEstoqueException {
 		Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		
-		Usuario usuario = new Usuario("Ronaldo");
+		Usuario usuario = umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",2,55.00));
 
 		//acao
@@ -63,7 +64,7 @@ public class LocacaoServiceTest {
 	@Test (expected = FilmeSemEstoqueException.class)
 	public void teste_filmeSemEstoque() throws Exception {
 		//cenario
-		Usuario usuario = new Usuario("Ronaldo");
+		Usuario usuario = umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(new Filme("A espera de um milagre",0,55.00));
 
 		//acao
@@ -87,7 +88,7 @@ public class LocacaoServiceTest {
 	@Test
 	public void teste_filmeVazio() throws LocadoraException, FilmeSemEstoqueException {
 		//cenario
-		Usuario usuario = new Usuario("Ronaldo");
+		Usuario usuario = umUsuario().agora();
 		
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Filmes vazio");
@@ -102,7 +103,7 @@ public class LocacaoServiceTest {
 		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		
 		//cenario
-		Usuario usuario = new Usuario("Bia");
+		Usuario usuario = umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(new Filme("Valente", 3, 80.00));
 		
 		//acao
