@@ -50,13 +50,13 @@ public class LocacaoServiceTest {
 		Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilme().agora());
+		List<Filme> filmes = Arrays.asList(umFilme().comValor(10.0).agora());
 
 		//acao
 		Locacao locacao = LS.alugarFilme(usuario, filmes);
 				
 		//validacao
-		error.checkThat(locacao.getValor(),is(equalTo(55.0)));
+		error.checkThat(locacao.getValor(),is(equalTo(10.0)));
 		error.checkThat(locacao.getDataLocacao(), MatchersProprios.ehHoje());
 		error.checkThat(locacao.getDataRetorno(), MatchersProprios.ehHojeComDiferencadeDias(1));
 	
@@ -66,7 +66,7 @@ public class LocacaoServiceTest {
 	public void teste_filmeSemEstoque() throws Exception {
 		//cenario
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilme().agora());
+		List<Filme> filmes = Arrays.asList(umFilme().semEstoque().agora());
 
 		//acao
 		LS.alugarFilme(usuario, filmes);
@@ -75,7 +75,7 @@ public class LocacaoServiceTest {
 	@Test
 	public void teste_usuarioVazio() throws FilmeSemEstoqueException {
 		//cenario
-		List<Filme> filmes = Arrays.asList(umFilme().agora());
+		List<Filme> filmes = Arrays.asList(umFilme().comValor(10.0).agora());
 
 		//acao
 		try {
@@ -105,7 +105,7 @@ public class LocacaoServiceTest {
 		
 		//cenario
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = Arrays.asList(umFilme().semEstoque().agora());
+		List<Filme> filmes = Arrays.asList(umFilme().comValor(10.0).agora());
 		
 		//acao
 		Locacao retorno = LS.alugarFilme(usuario, filmes);
