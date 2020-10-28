@@ -19,8 +19,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 import br.ce.wcaquino.buiders.FilmeBuilder;
+import br.ce.wcaquino.daos.LocacaoDAO;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -44,6 +46,8 @@ public class LocacaoServiceTest {
 	@Before
 	public void cenario() {
 		LS = new LocacaoService();
+		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+		LS.setLocacaoDAO(dao);
 	}	
 	
 	@Test
