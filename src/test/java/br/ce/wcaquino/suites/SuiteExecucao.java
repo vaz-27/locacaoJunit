@@ -16,3 +16,4 @@ import br.ce.wcaquino.servicos.LocacaoServiceTest;
 })
 public class SuiteExecucao {
 }
+ 
