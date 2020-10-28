@@ -7,6 +7,7 @@ import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -128,18 +129,23 @@ public class LocacaoServiceTest {
 	}
 	
 	@Test
-	public void naoAlugaFilmeParaNegativadoSPC() throws LocadoraException, FilmeSemEstoqueException {
+	public void naoAlugaFilmeParaNegativadoSPC() throws FilmeSemEstoqueException {
 		//cenario
 		Usuario usuario = umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeComValor().agora());
 		
 		when(spc.possuiNegativacao(usuario)).thenReturn(true);
 		
-		exception.expect(LocadoraException.class);
-		exception.expectMessage("Usuario Negativado");
-		
 		//acao
-		LS.alugarFilme(usuario, filmes);
+		try {
+			LS.alugarFilme(usuario, filmes);
+			Assert.fail();
+		} catch (LocadoraException e) {
+			Assert.assertThat(e.getMessage(), is("Usuario Negativado"));
+		}
+	
+		//verificacao
+		verify(spc).possuiNegativacao(usuario);
 	}
 	
 	@Test
