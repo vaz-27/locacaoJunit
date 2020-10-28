@@ -6,6 +6,7 @@ import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -30,12 +31,13 @@ import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.matcher.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
-import buildermaster.BuilderMaster;
 
 
 public class LocacaoServiceTest {
 	
 	private LocacaoService LS;
+	LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+	SPCService spc = Mockito.mock(SPCService.class);
 	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
@@ -46,8 +48,8 @@ public class LocacaoServiceTest {
 	@Before
 	public void cenario() {
 		LS = new LocacaoService();
-		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
 		LS.setLocacaoDAO(dao);
+		LS.setSPCService(spc);
 	}	
 	
 	@Test
@@ -119,8 +121,19 @@ public class LocacaoServiceTest {
 		assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 	}
 	
-	public static void main(String[] args) {
-		new BuilderMaster().gerarCodigoClasse(Locacao.class);
+	@Test
+	public void naoAlugaFilmeParaNegativadoSPC() throws LocadoraException, FilmeSemEstoqueException {
+		//cenario
+		Usuario usuario = umUsuario().agora();
+		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeComValor().agora());
+		
+		when(spc.possuiNegativacao(usuario)).thenReturn(true);
+		
+		exception.expect(LocadoraException.class);
+		exception.expectMessage("Usuario Negativado");
+		
+		//acao
+		LS.alugarFilme(usuario, filmes);
 	}
 }
 

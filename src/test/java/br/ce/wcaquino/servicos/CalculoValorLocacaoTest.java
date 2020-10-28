@@ -42,6 +42,8 @@ public class CalculoValorLocacaoTest {
 		LS = new LocacaoService();
 		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
 		LS.setLocacaoDAO(dao);
+		SPCService spc = Mockito.mock(SPCService.class);
+		LS.setSPCService(spc);
 	}
 	
 	private static Filme filme1 = FilmeBuilder.umFilmeComValor().agora();
