@@ -1,6 +1,7 @@
 package br.ce.wcaquino.servicos;
 
 
+import static br.ce.wcaquino.buiders.LocacaoBuilder.umLocacao;
 import static br.ce.wcaquino.buiders.UsuarioBuilder.umUsuario;
 import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -36,8 +37,9 @@ import br.ce.wcaquino.utils.DataUtils;
 public class LocacaoServiceTest {
 	
 	private LocacaoService LS;
-	LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
-	SPCService spc = Mockito.mock(SPCService.class);
+	private LocacaoDAO dao;
+	private SPCService spc;
+	private EmailService emailService;
 	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
@@ -48,8 +50,12 @@ public class LocacaoServiceTest {
 	@Before
 	public void cenario() {
 		LS = new LocacaoService();
+		dao = Mockito.mock(LocacaoDAO.class);
 		LS.setLocacaoDAO(dao);
+		spc = Mockito.mock(SPCService.class);
 		LS.setSPCService(spc);
+		emailService = Mockito.mock(EmailService.class);
+		LS.setEmailService(emailService);
 	}	
 	
 	@Test
@@ -134,6 +140,24 @@ public class LocacaoServiceTest {
 		
 		//acao
 		LS.alugarFilme(usuario, filmes);
+	}
+	
+	@Test
+	public void enviaEmailParaLocacoesAtrasadas() {
+		//cenario
+		Usuario usuario = umUsuario().agora();
+		List<Locacao> locacoes = Arrays.asList(
+				umLocacao().comUsuario(usuario)
+				.comDataRetorno(DataUtils.obterDataComDiferencaDias(-2))
+				.agora());
+		
+		when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
+		
+		//acao
+		LS.notificarAtrasos();
+		
+		//verificacao
+		Mockito.verify(emailService).notificarAtraso(usuario);
 	}
 }
 
