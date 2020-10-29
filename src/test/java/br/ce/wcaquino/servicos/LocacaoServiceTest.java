@@ -9,6 +9,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -166,9 +167,10 @@ public class LocacaoServiceTest {
 		LS.notificarAtrasos();
 		
 		//verificacao
-		Mockito.verify(emailService).notificarAtraso(usuario);
-		Mockito.verify(emailService, never()).notificarAtraso(usuario2);
-		Mockito.verify(emailService).notificarAtraso(usuario3);
+		verify(emailService).notificarAtraso(usuario);
+		verify(emailService, never()).notificarAtraso(usuario2);
+		verify(emailService).notificarAtraso(usuario3);
+		verifyNoMoreInteractions(emailService);
 	}
 }
 
