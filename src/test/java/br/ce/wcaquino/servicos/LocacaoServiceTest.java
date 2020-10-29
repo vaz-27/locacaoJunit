@@ -4,6 +4,8 @@ package br.ce.wcaquino.servicos;
 import static br.ce.wcaquino.buiders.LocacaoBuilder.umLocacao;
 import static br.ce.wcaquino.buiders.UsuarioBuilder.umUsuario;
 import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
+import static br.ce.wcaquino.matcher.MatchersProprios.ehHoje;
+import static br.ce.wcaquino.matcher.MatchersProprios.ehHojeComDiferencadeDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -24,8 +26,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import br.ce.wcaquino.buiders.FilmeBuilder;
@@ -187,9 +191,25 @@ public class LocacaoServiceTest {
 		exception.expectMessage("Problemas com SPC,tente novamente");
 
 		//acao
-		LS.alugarFilme(usuario, filmes);
+		LS.alugarFilme(usuario, filmes);		
+	}
+	
+	@Test
+	public void prorrogaLocacao() {
+		//cenario
+		Locacao locacao = umLocacao().agora();
 		
+		//acao
+		LS.prorrogarLocacao(locacao, 3);
 		
+		//verificacao
+		ArgumentCaptor<Locacao> argCapt = ArgumentCaptor.forClass(Locacao.class);
+		Mockito.verify(dao).salvar(argCapt.capture());
+		Locacao locacaoRetornada = argCapt.getValue();
+		
+		assertThat(locacaoRetornada.getValor(),is(30.0));
+		assertThat(locacaoRetornada.getDataLocacao(),ehHoje());
+		assertThat(locacaoRetornada.getDataRetorno(),ehHojeComDiferencadeDias(3));
 	}
 }
 
