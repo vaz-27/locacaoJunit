@@ -7,6 +7,7 @@ import static br.ce.wcaquino.matcher.MatchersProprios.caiNumaSegunda;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -152,10 +153,12 @@ public class LocacaoServiceTest {
 	public void enviaEmailParaLocacoesAtrasadas() {
 		//cenario
 		Usuario usuario = umUsuario().agora();
+		Usuario usuario2 = umUsuario().comNome("Jojo").agora();
+		Usuario usuario3 = umUsuario().comNome("Carlos").agora();
 		List<Locacao> locacoes = Arrays.asList(
-				umLocacao().comUsuario(usuario)
-				.comDataRetorno(DataUtils.obterDataComDiferencaDias(-2))
-				.agora());
+				umLocacao().atrasado().comUsuario(usuario).agora(),
+				umLocacao().comUsuario(usuario2).agora(),
+				umLocacao().atrasado().comUsuario(usuario3).agora());
 		
 		when(dao.obterLocacoesPendentes()).thenReturn(locacoes);
 		
@@ -164,6 +167,8 @@ public class LocacaoServiceTest {
 		
 		//verificacao
 		Mockito.verify(emailService).notificarAtraso(usuario);
+		Mockito.verify(emailService, never()).notificarAtraso(usuario2);
+		Mockito.verify(emailService).notificarAtraso(usuario3);
 	}
 }
 
