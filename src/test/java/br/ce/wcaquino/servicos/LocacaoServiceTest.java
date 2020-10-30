@@ -207,9 +207,9 @@ public class LocacaoServiceTest {
 		Mockito.verify(dao).salvar(argCapt.capture());
 		Locacao locacaoRetornada = argCapt.getValue();
 		
-		assertThat(locacaoRetornada.getValor(),is(30.0));
-		assertThat(locacaoRetornada.getDataLocacao(),ehHoje());
-		assertThat(locacaoRetornada.getDataRetorno(),ehHojeComDiferencadeDias(3));
+		error.checkThat(locacaoRetornada.getValor(),is(30.0));
+		error.checkThat(locacaoRetornada.getDataLocacao(),ehHoje());
+		error.checkThat(locacaoRetornada.getDataRetorno(),ehHojeComDiferencadeDias(3));
 	}
 }
 
