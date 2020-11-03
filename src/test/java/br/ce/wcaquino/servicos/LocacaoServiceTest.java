@@ -26,15 +26,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import br.ce.wcaquino.buiders.FilmeBuilder;
 import br.ce.wcaquino.daos.LocacaoDAO;
@@ -46,8 +42,6 @@ import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.matcher.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(LocacaoService.class)
 public class LocacaoServiceTest {
 	
 	@InjectMocks
@@ -126,12 +120,11 @@ public class LocacaoServiceTest {
 	
 	
 	@Test
-	public void teste_naoDevolverFilmeNoDomingo() throws Exception {		
+	public void teste_naoDevolverFilmeNoDomingo() throws Exception {	
+		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		//cenario
 		Usuario usuario = umUsuario().agora();
 		List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeComValor().agora());
-		
-		PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(DataUtils.obterData(29, 4, 2017));
 		
 		//acao
 		Locacao retorno = LS.alugarFilme(usuario, filmes);
