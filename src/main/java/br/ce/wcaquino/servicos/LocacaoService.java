@@ -52,24 +52,12 @@ public class LocacaoService {
 		Locacao locacao = new Locacao();
 		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
-		locacao.setDataLocacao(new Date());
-		Double valorTotal = 0d;
-		for(int i=0; i<filmes.size(); i++) {
-			Filme filme = filmes.get(i);
-			Double valorFilme = filme.getPrecoLocacao();
-			switch (i) {
-			case 2: valorFilme *= 0.75; break;
-			case 3: valorFilme *= 0.5; break;
-			case 4: valorFilme *= 0.25; break;
-			case 5: valorFilme *= 0d; break;			
-			}
-			valorTotal += valorFilme;
-		}
+		locacao.setDataLocacao(obterData());
 		
-		locacao.setValor(valorTotal);
+		locacao.setValor(calcularValorLocacao(filmes));
 
 		//Entrega no dia seguinte
-		Date dataEntrega = new Date();
+		Date dataEntrega = obterData();
 		dataEntrega = adicionarDias(dataEntrega, 1);
 		
 		if (DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY)) {
@@ -82,11 +70,31 @@ public class LocacaoService {
 		
 		return locacao;
 	}
+
+	private Double calcularValorLocacao(List<Filme> filmes) {
+		Double valorTotal = 0d;
+		for(int i=0; i<filmes.size(); i++) {
+			Filme filme = filmes.get(i);
+			Double valorFilme = filme.getPrecoLocacao();
+			switch (i) {
+			case 2: valorFilme *= 0.75; break;
+			case 3: valorFilme *= 0.5; break;
+			case 4: valorFilme *= 0.25; break;
+			case 5: valorFilme *= 0d; break;			
+			}
+			valorTotal += valorFilme;
+		}
+		return valorTotal;
+	}
+
+	protected Date obterData() {
+		return new Date();
+	}
 	
 	public void notificarAtrasos() {
 		List<Locacao> locacoes = dao.obterLocacoesPendentes();
 		for (Locacao locacao : locacoes) {
-			if(locacao.getDataRetorno().before(new Date())) {
+			if(locacao.getDataRetorno().before(obterData())) {
 				email.notificarAtraso(locacao.getUsuario());
 			}
 		}
@@ -96,7 +104,7 @@ public class LocacaoService {
 		Locacao novaLocacao = new Locacao();
 		novaLocacao.setUsuario(locacao.getUsuario());
 		novaLocacao.setFilmes(locacao.getFilmes());
-		novaLocacao.setDataLocacao(new Date());
+		novaLocacao.setDataLocacao(obterData());
 		novaLocacao.setDataRetorno(DataUtils.obterDataComDiferencaDias(dias));
 		novaLocacao.setValor(locacao.getValor()*dias);
 		dao.salvar(novaLocacao);
